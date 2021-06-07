@@ -3,6 +3,8 @@ package br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +18,7 @@ import br.zup.criacao.proposta.rodrigo.criacaoproposta.validation.CPFOuCNPJ;
 @Entity
 public class Proposta {
 
-	//Atributos
+	// Atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -39,12 +41,15 @@ public class Proposta {
 	@PositiveOrZero
 	private BigDecimal salario;
 
-	//construtor padrão sem campos
+	@Enumerated(EnumType.STRING)
+	private StatusProposta status;
+
+	// construtor padrão sem campos
 	@Deprecated
 	public Proposta() {
 	}
 
-	//construtor com campos
+	// construtor com campos
 	public Proposta(@NotBlank String documento, @Email @NotBlank String email, @NotBlank String nome,
 			@NotBlank String endereco, @NotNull @PositiveOrZero BigDecimal salario) {
 		this.documento = documento;
@@ -53,11 +58,23 @@ public class Proposta {
 		this.endereco = endereco;
 		this.salario = salario;
 	}
-	
-	//metodos getters e setters.
+
+	// metodos getters e setters.
 
 	public Long getId() {
 		return id;
+	}
+
+	public void setStatus(StatusProposta status) {
+		this.status = status;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public String getDocumento() {
+		return documento;
 	}
 
 }

@@ -1,6 +1,7 @@
 package br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -23,6 +24,9 @@ public class PropostaController {
 	
 	@Autowired
 	private PropostaRepository propostaRepository;
+	
+	@Autowired
+	private List<NovaPropostaEvento> novaPropostaEvento;
 
 	@PostMapping
 	@Transactional
@@ -34,6 +38,10 @@ public class PropostaController {
 		}
 		Proposta proposta = propostaRequest.toModel();
 		propostaRepository.save(proposta);
+		
+		for (NovaPropostaEvento evento : novaPropostaEvento) {
+			evento.executarNovaProposta(proposta);
+		}
 		
 		URI uri = uriComponentsBuilder.path("/proposta/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
 		
