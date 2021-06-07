@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta.consultadadosdosolicitante.ConsultaRequest;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta.consultadadosdosolicitante.ConsultaResponse;
 
-@FeignClient(value = "consulta", url = "${consulta.uri}")
+@FeignClient(value = "SolicitacaoDadosAPI", url = "${consulta.uri}")
 public interface APIConsultaIntegracao {
 
 	@PostMapping("/api/solicitacao")
