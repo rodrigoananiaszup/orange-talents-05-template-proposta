@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import br.zup.criacao.proposta.rodrigo.criacaoproposta.apiexterna.APIConsultaIntegracao;
+import br.zup.criacao.proposta.rodrigo.criacaoproposta.apiexterna.ConsultClient;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta.NovaPropostaEvento;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta.Proposta;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta.PropostaRepository;
@@ -15,7 +15,7 @@ import feign.FeignException;
 class ConsultaDadosSolicitante implements NovaPropostaEvento {
 
 	@Autowired
-	private APIConsultaIntegracao integracao;
+	private ConsultClient integracao;
 
 	@Autowired
 	private PropostaRepository propostaRepository;
@@ -25,10 +25,10 @@ class ConsultaDadosSolicitante implements NovaPropostaEvento {
 
 		ConsultaRequest request = new ConsultaRequest(proposta);
 		try {
+
 			ResponseEntity<ConsultaResponse> responseEntity = integracao.consultar(request);
 			ConsultaResponse response = responseEntity.getBody();
-			//proposta.setStatus(response.getResultadoSolicitacao());
-			proposta.setStatus(StatusProposta.ELEGIVEL);
+			proposta.setStatus(response.getResultadoSolicitacao());
 		} catch (FeignException e) {
 			proposta.setStatus(StatusProposta.NAO_ELEGIVEL);
 		}

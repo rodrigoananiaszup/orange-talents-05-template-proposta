@@ -2,17 +2,22 @@ package br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
+import com.sun.istack.Nullable;
+
+import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.Cartao;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.validation.CPFOuCNPJ;
 
 @Entity
@@ -43,6 +48,10 @@ public class Proposta {
 
 	@Enumerated(EnumType.STRING)
 	private StatusProposta status;
+
+	@Nullable
+	@OneToOne(mappedBy = "proposta", cascade = CascadeType.MERGE)
+	private Cartao cartao;
 
 	// construtor padrão sem campos
 	@Deprecated
@@ -75,6 +84,10 @@ public class Proposta {
 
 	public String getDocumento() {
 		return documento;
+	}
+
+	public void setCartao(Cartao cartao) {
+		this.cartao = cartao;
 	}
 
 }
