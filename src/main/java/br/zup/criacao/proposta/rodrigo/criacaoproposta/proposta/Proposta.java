@@ -90,4 +90,24 @@ public class Proposta {
 		this.cartao = cartao;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public BigDecimal getSalario() {
+		return salario;
+	}
+
+	public StatusProposta getStatus() {
+		return status;
+	}
+
+	public Cartao getCartao() {
+		return cartao;
+	}
+
 }

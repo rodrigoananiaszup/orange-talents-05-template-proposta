@@ -10,6 +10,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,20 +19,24 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.DetalhesPropostaCartaoResponse;
+
 @RestController
 @RequestMapping("/api/proposta")
 public class PropostaController {
 
-	
 	@Autowired
 	private PropostaRepository propostaRepository;
-	
+
 	@Autowired
 	private List<NovaPropostaEvento> novaPropostaEvento;
+	
+	//cria nova proposta
 
 	@PostMapping
 	@Transactional
-	private ResponseEntity<?> criaProposta(@RequestBody @Valid PropostaRequest propostaRequest, UriComponentsBuilder uriComponentsBuilder){
+	private ResponseEntity<?> criaProposta(@RequestBody @Valid PropostaRequest propostaRequest,
+			UriComponentsBuilder uriComponentsBuilder) {
 		Optional<Proposta> possivelProposta = propostaRepository.findByDocumento(propostaRequest.getDocumento());
 		if (possivelProposta.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
@@ -38,14 +44,27 @@ public class PropostaController {
 		}
 		Proposta proposta = propostaRequest.toModel();
 		propostaRepository.save(proposta);
-		
+
 		for (NovaPropostaEvento evento : novaPropostaEvento) {
 			evento.executarNovaProposta(proposta);
 		}
-		
+
 		URI uri = uriComponentsBuilder.path("/proposta/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
-		
+
 		return ResponseEntity.created(uri).build();
+
+	}
+
+	//mostra proposta pelo id
+	@GetMapping("/{id}")
+	private ResponseEntity<?> mostraProposta(@PathVariable Long id) {
+		Optional<Proposta> possivelProposta = propostaRepository.findById(id);
+		if (possivelProposta.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
 		
+		Proposta proposta = possivelProposta.get();
+		DetalhesPropostaResponse response  = new DetalhesPropostaResponse(proposta);
+		return ResponseEntity.ok(response);
 	}
 }
