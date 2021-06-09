@@ -1,15 +1,10 @@
 package br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta;
 
 import java.math.BigDecimal;
-import java.util.Optional;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.validation.CPFOuCNPJ;
 

@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.DetalhesPropostaCartaoResponse;
-
 @RestController
 @RequestMapping("/api/proposta")
 public class PropostaController {
@@ -30,8 +28,8 @@ public class PropostaController {
 
 	@Autowired
 	private List<NovaPropostaEvento> novaPropostaEvento;
-	
-	//cria nova proposta
+
+	// cria nova proposta
 
 	@PostMapping
 	@Transactional
@@ -55,16 +53,16 @@ public class PropostaController {
 
 	}
 
-	//mostra proposta pelo id
+	// mostra proposta pelo id
 	@GetMapping("/{id}")
 	private ResponseEntity<?> mostraProposta(@PathVariable Long id) {
 		Optional<Proposta> possivelProposta = propostaRepository.findById(id);
 		if (possivelProposta.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 		Proposta proposta = possivelProposta.get();
-		DetalhesPropostaResponse response  = new DetalhesPropostaResponse(proposta);
+		DetalhesPropostaResponse response = new DetalhesPropostaResponse(proposta);
 		return ResponseEntity.ok(response);
 	}
 }
