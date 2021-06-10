@@ -4,17 +4,17 @@ import br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta.Proposta;
 
 public class ConsultaRequest {
 
-	private Long idProposta;
+	private String idProposta;
 	private String nome;
 	private String documento;
 
 	public ConsultaRequest(Proposta proposta) {
-		this.idProposta = proposta.getId();
+		this.idProposta = proposta.getUuid();
 		this.nome = proposta.getNome();
 		this.documento = proposta.getDocumento();
 	}
 
-	public Long getIdProposta() {
+	public String getIdProposta() {
 		return idProposta;
 	}
 

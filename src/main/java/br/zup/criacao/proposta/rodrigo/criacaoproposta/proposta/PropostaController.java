@@ -47,16 +47,16 @@ public class PropostaController {
 			evento.executarNovaProposta(proposta);
 		}
 
-		URI uri = uriComponentsBuilder.path("/proposta/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
+		URI uri = uriComponentsBuilder.path("api/propostas/{id}").buildAndExpand(proposta.getUuid()).toUri();
 
 		return ResponseEntity.created(uri).build();
 
 	}
 
 	// mostra proposta pelo id
-	@GetMapping("/{id}")
-	private ResponseEntity<?> mostraProposta(@PathVariable Long id) {
-		Optional<Proposta> possivelProposta = propostaRepository.findById(id);
+	@GetMapping("/{uuid}")
+	private ResponseEntity<?> mostraProposta(@PathVariable String uuid) {
+		Optional<Proposta> possivelProposta = propostaRepository.findByUuid(uuid);
 		if (possivelProposta.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}

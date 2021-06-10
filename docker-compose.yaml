@@ -11,13 +11,15 @@ services:
     restart: always
     environment:
       MARIADB_DATABASE: 'proposta'
-      MARIADB_ROOT_PASSWORD: ''
+      MARIADB_ROOT_PASSWORD:
     ports:
       - '3307:3306'
     volumes:
       - proposta-volume:/var/lib/mariadb
     expose:
       - '3306'
+    networks:
+      - propostas-network
 
   proposta:
     build:
@@ -33,6 +35,8 @@ services:
       MARIADB_HOST: jdbc:mariadb://mariadb:3306/proposta?useTimezone=true&serverTimezone=UTC
       URI_CONSULTA: http://analise:9999
       URI_ACCOUNTS: http://contas:8888
+    networks:
+      - propostas-network
 
   zookeeper:
     image: "confluentinc/cp-zookeeper:5.2.1"

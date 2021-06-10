@@ -13,7 +13,7 @@ public class DetalhesPropostaCartaoResponse {
 
 	//metodo construtor
 	public DetalhesPropostaCartaoResponse(Cartao cartao) {
-		this.numeroCartao = cartao.getId();
+		this.numeroCartao = cartao.getUuid();
 		this.emitidoEm = cartao.getEmitidoEm();
 		this.titular = cartao.getTitular();
 		this.limite = cartao.getLimite();
