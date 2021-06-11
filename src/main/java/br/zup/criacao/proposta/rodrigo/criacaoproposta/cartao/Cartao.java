@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -24,7 +26,7 @@ public class Cartao {
 
 	@Id
 	private String id;
-	
+
 	@NotNull
 	private String uuid = UUID.randomUUID().toString();
 
@@ -39,13 +41,16 @@ public class Cartao {
 
 	@OneToOne
 	private Proposta proposta;
-	
+
 	@OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
 	private Set<Biometria> biometrias;
-	
+
 	@OneToOne(mappedBy = "cartao", cascade = CascadeType.PERSIST)
 	@Nullable
 	private BloqueioCartao bloqueioCartao;
+
+	@Enumerated(EnumType.STRING)
+	private StatusCartao status = StatusCartao.DISPONIVEL;
 
 	/**
 	 * No argument constructor for Hibernate, should not be used.
@@ -66,7 +71,7 @@ public class Cartao {
 	public String getId() {
 		return id;
 	}
-	
+
 	public String getUuid() {
 		return uuid;
 	}
@@ -86,17 +91,18 @@ public class Cartao {
 	public Proposta getProposta() {
 		return proposta;
 	}
-	
+
 	public void addBiometria(Biometria biometria) {
 		this.biometrias.add(biometria);
 	}
 
 	public boolean bloqueado() {
-		return this.bloqueioCartao != null;
+		return this.status == StatusCartao.BLOQUEADO;
 	}
 
 	public void bloquearCartao(BloqueioCartao bloqueioCartao) {
 		this.bloqueioCartao = bloqueioCartao;
+		this.status = StatusCartao.BLOQUEADO;
 	}
 
 }
