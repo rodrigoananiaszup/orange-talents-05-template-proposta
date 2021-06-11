@@ -13,7 +13,10 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
+import com.sun.istack.Nullable;
+
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.biometria.Biometria;
+import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.bloqueio.BloqueioCartao;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta.Proposta;
 
 @Entity
@@ -39,6 +42,10 @@ public class Cartao {
 	
 	@OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
 	private Set<Biometria> biometrias;
+	
+	@OneToOne(mappedBy = "cartao", cascade = CascadeType.PERSIST)
+	@Nullable
+	private BloqueioCartao bloqueioCartao;
 
 	/**
 	 * No argument constructor for Hibernate, should not be used.
@@ -82,6 +89,14 @@ public class Cartao {
 	
 	public void addBiometria(Biometria biometria) {
 		this.biometrias.add(biometria);
+	}
+
+	public boolean bloqueado() {
+		return this.bloqueioCartao != null;
+	}
+
+	public void bloquearCartao(BloqueioCartao bloqueioCartao) {
+		this.bloqueioCartao = bloqueioCartao;
 	}
 
 }
