@@ -1,6 +1,7 @@
 package br.zup.criacao.proposta.rodrigo.criacaoproposta.avisodeviagem;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
@@ -31,6 +32,10 @@ public class AvisoViagemRequest {
 
 	public AvisoViagem toModel(String ip, String userAgent, Cartao cartao) {
 		return new AvisoViagem(this.destinoViagem, this.dataTermino, ip, userAgent, cartao);
+	}
+
+	public AvisarViagemRequest toAPI() {
+		return new AvisarViagemRequest(this.destinoViagem, this.dataTermino);
 	}
 
 }

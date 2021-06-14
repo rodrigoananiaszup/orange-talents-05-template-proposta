@@ -31,6 +31,7 @@ public class Cartao {
 	@NotNull
 	private String uuid = UUID.randomUUID().toString();
 
+
 	@NotNull
 	private LocalDateTime emitidoEm;
 
@@ -52,7 +53,7 @@ public class Cartao {
 
 	@Enumerated(EnumType.STRING)
 	private StatusCartao status = StatusCartao.DISPONIVEL;
-	
+
 	@OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
 	@Nullable
 	private Set<AvisoViagem> avisosViagens;
@@ -72,6 +73,7 @@ public class Cartao {
 		this.limite = limite;
 		this.proposta = proposta;
 	}
+
 
 	public String getId() {
 		return id;
@@ -109,7 +111,7 @@ public class Cartao {
 		this.bloqueioCartao = bloqueioCartao;
 		this.status = StatusCartao.BLOQUEADO;
 	}
-	
+
 	public void addAvisoViagem(AvisoViagem avisoViagem) {
 		this.avisosViagens.add(avisoViagem);
 	}
