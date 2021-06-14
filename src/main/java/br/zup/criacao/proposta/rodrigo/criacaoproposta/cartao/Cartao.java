@@ -17,6 +17,7 @@ import javax.validation.constraints.PositiveOrZero;
 
 import com.sun.istack.Nullable;
 
+import br.zup.criacao.proposta.rodrigo.criacaoproposta.avisodeviagem.AvisoViagem;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.biometria.Biometria;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.bloqueio.BloqueioCartao;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta.Proposta;
@@ -51,6 +52,10 @@ public class Cartao {
 
 	@Enumerated(EnumType.STRING)
 	private StatusCartao status = StatusCartao.DISPONIVEL;
+	
+	@OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+	@Nullable
+	private Set<AvisoViagem> avisosViagens;
 
 	/**
 	 * No argument constructor for Hibernate, should not be used.
@@ -103,6 +108,10 @@ public class Cartao {
 	public void bloquearCartao(BloqueioCartao bloqueioCartao) {
 		this.bloqueioCartao = bloqueioCartao;
 		this.status = StatusCartao.BLOQUEADO;
+	}
+	
+	public void addAvisoViagem(AvisoViagem avisoViagem) {
+		this.avisosViagens.add(avisoViagem);
 	}
 
 }
