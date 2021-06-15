@@ -1,8 +1,7 @@
-package br.zup.criacao.proposta.rodrigo.criacaoproposta.carteira.paypal;
+package br.zup.criacao.proposta.rodrigo.criacaoproposta.carteira.samsungpay;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.Cartao;
@@ -11,8 +10,9 @@ import br.zup.criacao.proposta.rodrigo.criacaoproposta.carteira.Carteira;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.carteira.CarteiraRequest;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.carteira.TipoCarteira;
 
-public class PaypalCarteiraRequest implements CarteiraRequest {
+public class SamsungPayCarteiraRequest implements CarteiraRequest {
 
+	
 	@NotBlank
 	@Email
 	private String email;
@@ -38,5 +38,6 @@ public class PaypalCarteiraRequest implements CarteiraRequest {
 	public TipoCarteira getTipoCarteira() {
 		return this.tipoCarteira;
 	}
+
 
 }

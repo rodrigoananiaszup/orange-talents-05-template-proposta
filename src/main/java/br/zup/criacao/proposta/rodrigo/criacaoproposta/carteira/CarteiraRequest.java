@@ -8,4 +8,6 @@ public interface CarteiraRequest {
 	public Carteira toModel(String numeroCarteira, Cartao cartao);
 
 	public AssociarCarteiraRequest toAPI(String numeroCartao);
+	
+	TipoCarteira getTipoCarteira(); 
 }

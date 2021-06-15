@@ -2,18 +2,25 @@ package br.zup.criacao.proposta.rodrigo.criacaoproposta.carteira;
 
 public enum TipoCarteira {
 
-	PayPal(1);
+	PayPal(1, "paypal"), SamsungPay(Integer.MAX_VALUE, "samsungpay");
 
-	Integer carteiraLimite;
+	private Integer carteiraLimite;
+	private String uri;
 
-	TipoCarteira(Integer limiteCarteira) {
-		if (limiteCarteira == null) {
-			this.carteiraLimite = Integer.MAX_VALUE;
+	TipoCarteira(Integer carteiraLimite, String uri) {
+		if (carteiraLimite == null) {
+			carteiraLimite = Integer.MAX_VALUE;
 		}
-		this.carteiraLimite = limiteCarteira;
+		this.carteiraLimite = carteiraLimite;
+		this.uri = uri;
 	}
 
 	public Integer getCarteiraLimite() {
 		return carteiraLimite;
 	}
+	
+	public String getUri() {
+		return uri;
+	}
+
 }

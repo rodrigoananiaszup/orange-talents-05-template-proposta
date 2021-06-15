@@ -20,6 +20,7 @@ import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.Cartao;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.CartaoRepository;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.ClientCartao;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.carteira.paypal.PaypalCarteiraRequest;
+import br.zup.criacao.proposta.rodrigo.criacaoproposta.carteira.samsungpay.SamsungPayCarteiraRequest;
 
 @RestController
 @RequestMapping("/api/cartoes")
@@ -37,11 +38,17 @@ public class CarteiraController {
 	@PostMapping("/{uuid}/carteiras/paypal")
 	private ResponseEntity<?> criaCarteiraPayPal(@PathVariable String uuid,
 			@Valid @RequestBody PaypalCarteiraRequest request, UriComponentsBuilder uriComponentsBuilder) {
-		return criaCarteira(uuid, request, uriComponentsBuilder, TipoCarteira.PayPal);
+		return criaCarteira(uuid, request, uriComponentsBuilder);
+	}
+	
+	@PostMapping("/{uuid}/carteiras/samsungpay")
+	private ResponseEntity<?> criaCarteiraSamsungPay(@PathVariable String uuid,
+			@Valid @RequestBody SamsungPayCarteiraRequest request, UriComponentsBuilder uriComponentsBuilder) {
+		return criaCarteira(uuid, request, uriComponentsBuilder);
 	}
 
 	private ResponseEntity<?> criaCarteira(@RequestBody @Valid @PathVariable String uuid, CarteiraRequest request,
-			UriComponentsBuilder uriComponentBuilder, TipoCarteira tipoCarteira) {
+			UriComponentsBuilder uriComponentBuilder) {
 
 		Optional<Cartao> possivelCartao = cartaoRepository.findByUuid(uuid);
 		if (possivelCartao.isEmpty()) {
@@ -49,6 +56,8 @@ public class CarteiraController {
 		}
 
 		Cartao cartao = possivelCartao.get();
+		
+		TipoCarteira tipoCarteira = request.getTipoCarteira();
 
 		Integer count = carteiraRepository.countByCartaoAndTipoCarteira(cartao, tipoCarteira);
 		if (count >= tipoCarteira.getCarteiraLimite()) {
@@ -63,15 +72,16 @@ public class CarteiraController {
 			response = clientCartao.associarCarteira(cartao.getId(), api);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-					"Não foi possível associar a carteira neste momento, tente novamente mais tarde.");
+					"Não foi possível associar a carteira " + tipoCarteira.toString() + ", tente novamente.");
 		}
 
 		Carteira carteira = request.toModel(response.getBody().getnCarteira(), cartao);
 		cartao.addCarteira(carteira);
 		cartaoRepository.save(cartao);
 
-		URI uri = uriComponentBuilder.path("api/carteiras/paypal/{nCarteira}")
-				.buildAndExpand(response.getBody().getnCarteira()).toUri();
+		URI uri = uriComponentBuilder.path("api/carteiras/{uri}/{nCarteira}").buildAndExpand(tipoCarteira.getUri(), 
+				response.getBody().getnCarteira()).toUri();
+
 		return ResponseEntity.created(uri).build();
 	}
 }
