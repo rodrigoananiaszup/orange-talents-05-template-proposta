@@ -20,6 +20,7 @@ import com.sun.istack.Nullable;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.avisodeviagem.AvisoViagem;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.biometria.Biometria;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.bloqueio.BloqueioCartao;
+import br.zup.criacao.proposta.rodrigo.criacaoproposta.carteira.Carteira;
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.proposta.Proposta;
 
 @Entity
@@ -30,7 +31,8 @@ public class Cartao {
 
 	@NotNull
 	private String uuid = UUID.randomUUID().toString();
-
+	
+	public String numeroCartao;
 
 	@NotNull
 	private LocalDateTime emitidoEm;
@@ -57,6 +59,10 @@ public class Cartao {
 	@OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
 	@Nullable
 	private Set<AvisoViagem> avisosViagens;
+	
+	@OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+	@Nullable
+	private Set<Carteira> carteiras;
 
 	/**
 	 * No argument constructor for Hibernate, should not be used.
@@ -74,13 +80,19 @@ public class Cartao {
 		this.proposta = proposta;
 	}
 
-
 	public String getId() {
 		return id;
 	}
 
 	public String getUuid() {
 		return uuid;
+	}
+	
+	
+
+
+	public String getNumeroCartao() {
+		return numeroCartao;
 	}
 
 	public LocalDateTime getEmitidoEm() {
@@ -114,6 +126,10 @@ public class Cartao {
 
 	public void addAvisoViagem(AvisoViagem avisoViagem) {
 		this.avisosViagens.add(avisoViagem);
+	}
+
+	public void addCarteira(Carteira carteira) {
+		this.carteiras.add(carteira);
 	}
 
 }
