@@ -1,7 +1,6 @@
 package br.zup.criacao.proposta.rodrigo.criacaoproposta.avisodeviagem;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;

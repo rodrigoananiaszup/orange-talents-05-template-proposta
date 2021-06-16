@@ -2,7 +2,6 @@ package br.zup.criacao.proposta.rodrigo.criacaoproposta.carteira.paypal;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.Cartao;

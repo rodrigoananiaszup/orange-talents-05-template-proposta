@@ -3,7 +3,6 @@ package br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
