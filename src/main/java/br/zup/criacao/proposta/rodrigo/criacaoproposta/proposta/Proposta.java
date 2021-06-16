@@ -16,6 +16,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.Assert;
+
 import com.sun.istack.Nullable;
 
 import br.zup.criacao.proposta.rodrigo.criacaoproposta.cartao.Cartao;
@@ -32,7 +35,7 @@ public class Proposta {
 	@NotNull
 	private String uuid = UUID.randomUUID().toString();
 
-	@CPFOuCNPJ
+	
 	@NotBlank
 	private String documento;
 
@@ -65,7 +68,9 @@ public class Proposta {
 	// construtor com campos
 	public Proposta(@NotBlank String documento, @Email @NotBlank String email, @NotBlank String nome,
 			@NotBlank String endereco, @NotNull @PositiveOrZero BigDecimal salario) {
-		this.documento = documento;
+		Assert.state(documento.length() != 60,
+				"A proposta não deve ser construida com um documento neste formato!");
+		this.documento = new BCryptPasswordEncoder().encode(documento);
 		this.email = email;
 		this.nome = nome;
 		this.endereco = endereco;
