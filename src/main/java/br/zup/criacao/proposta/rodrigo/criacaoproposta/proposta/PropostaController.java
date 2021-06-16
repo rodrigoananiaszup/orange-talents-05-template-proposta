@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.zup.criacao.proposta.rodrigo.criacaoproposta.metricas.Metricas;
+import io.micrometer.core.annotation.Timed;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
 
@@ -37,6 +39,9 @@ public class PropostaController {
 	public PropostaController(Tracer tracer) {
 		this.tracer = tracer;
 	}
+	
+	@Autowired
+	private Metricas metricas;
 
 
 	// cria nova proposta
@@ -50,6 +55,8 @@ public class PropostaController {
 		activeSpan.setTag("user.email", propostaRequest.getEmail());
 		activeSpan.setBaggageItem("user.email", propostaRequest.getEmail());
 		activeSpan.log("Criação de proposta para o e-mail " + propostaRequest.getEmail());
+		
+		metricas.addContador("criacao_proposta");
 		
 		Optional<Proposta> possivelProposta = propostaRepository.findByDocumento(propostaRequest.getDocumento());
 		if (possivelProposta.isPresent()) {
@@ -71,6 +78,7 @@ public class PropostaController {
 
 	// mostra proposta pelo id
 	@GetMapping("/{uuid}")
+	@Timed(value = "proposta_consulta")
 	private ResponseEntity<?> mostraProposta(@PathVariable String uuid) {
 		Optional<Proposta> possivelProposta = propostaRepository.findByUuid(uuid);
 		if (possivelProposta.isEmpty()) {
